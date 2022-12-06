@@ -9,7 +9,6 @@ jobs:
     steps:
       -
         name: Checkout
-        if: github.event_name == 'schedule'
         uses: actions/checkout@v3
         with:
           ref: main
@@ -25,7 +24,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            test/pihole-unbound
+            test/test
           flavor: |
             latest=true
           tags: |
@@ -35,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./latest/
-          platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6, linux/i386
+          platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6, linux/386
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
