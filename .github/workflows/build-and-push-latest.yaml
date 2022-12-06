@@ -1,0 +1,41 @@
+name: Latest Build & Push
+on:
+  schedule:
+    - cron: '0 7 1-30/3 * *'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        if: github.event_name == 'schedule'
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            test/pihole-unbound
+          flavor: |
+            latest=true
+          tags: |
+            type=schedule,pattern={{date 'YYYYMMDD'}}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./latest/
+          platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6, linux/i386
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
