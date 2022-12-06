@@ -3,7 +3,7 @@ FROM pihole/pihole:latest as openssl
 WORKDIR /tmp/src
 
 RUN set -e -x && \
-    build_deps="build-essential ca-certificates curl dirmngr gnupg libidn2-0-dev libssl-dev" && \
+    build_deps="build-essential ca-certificates curl dirmngr gnupg libidn2-0-dev libssl-dev libc6-dev" && \
     DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
       $build_deps && \
     git clone https://github.com/openssl/openssl.git && \
