@@ -10,12 +10,12 @@ jobs:
       # TEST ONLY. DELETE THIS
       - name: WORKFLOW OUTPUT TEST
         id: workflow_output_test
-        run: echo $(git diff-tree --no-commit-id --name-only -r HEAD)
+        run: echo $(git show HEAD | grep "main.py")
       # Check if main.py has been modified since the last commit
       - name: Check for modifications to main.py
         id: check-modifications
         run: |
-          if ! git diff-tree --no-commit-id --name-only -r HEAD | grep -q "main.py"; then
+          if ! git show HEAD | grep -q "main.py"; then
             echo "No changes to main.py since last commit"
             exit 0
           fi
