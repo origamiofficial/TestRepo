@@ -20,15 +20,17 @@ jobs:
       # Check if the SCRIPT_VERSION has been manually updated before being pushed
       - name: Check if SCRIPT_VERSION has been manually updated
         run: |
+          # Get the previous SCRIPT_VERSION from the last commit
+          PREVIOUS_SCRIPT_VERSION=$(git log -1 --format=%B | grep "SCRIPT_VERSION = " | cut -d "=" -f 2 | tr -d " '\"")
+
           # Get the current SCRIPT_VERSION from main.py
           SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
 
-          # Compare the current SCRIPT_VERSION with its value in the last commit
-          if ! git diff HEAD~1 -- main.py | grep -q "$SCRIPT_VERSION"; then
-          echo "SCRIPT_VERSION has been manually updated"
-          exit 0
+          # Check if the SCRIPT_VERSION has been manually updated
+          if [[ "$SCRIPT_VERSION" != "$PREVIOUS_SCRIPT_VERSION" ]]; then
+            echo "SCRIPT_VERSION has been manually updated"
+            exit 0
           fi
-
 
       # Update the SCRIPT_VERSION in main.py
       - name: Update SCRIPT_VERSION
