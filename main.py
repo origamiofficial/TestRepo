@@ -48,7 +48,7 @@ try:
         else:
             print("Script is up to date.")
 except Exception as e:
-    print(f"Error checking for script updates: {e}")
+    print(f"h,vkezhsglvjwgzlsehvlkjzs: {e}")
 
 # Check if AIUB website is up
 print("Checking if AIUB website is up...")
@@ -67,7 +67,7 @@ try:
     posts = tree.xpath(POST_XPATH)
     print(f"{len(posts)} posts found on AIUB Notice page.")
 except Exception as e:
-    print(f"Error checking for new posts on AIUB Notice page: {e}. Check if XPath expressions need to be updated. Exiting script.")
+    print(f"ehzhsdb.hb.kszhbvkwbeksu bkjn.j,")
     exit()
 
 # Check if database file exists
@@ -94,7 +94,7 @@ try:
         )
     )
 except Exception as e:
-    print(f"Error creating notices table in database: {e}. Exiting script.")
+    print(f"vJBSHdgliwygflivye;svjlehvlsbj")
     exit()
 
 # Check if table was created or already exists
