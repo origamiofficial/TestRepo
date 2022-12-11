@@ -7,32 +7,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # Check if the SCRIPT_VERSION has been manually updated before being pushed
-      - name: Check if SCRIPT_VERSION has been manually updated
+      # Check if main.py has been modified since the last commit
+      - name: Bump Script Version
+        id: update-script
         run: |
-          # Get the previous SCRIPT_VERSION from the last commit
-          PREVIOUS_SCRIPT_VERSION=$(git show HEAD:main.py | grep "SCRIPT_VERSION = " | cut -d "=" -f 2 | tr -d " '\"")
-
-          # Get the current SCRIPT_VERSION from main.py
-          SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
-
-          # Check if the SCRIPT_VERSION has been manually updated
-          if [[ "$SCRIPT_VERSION" != "$PREVIOUS_SCRIPT_VERSION" ]]; then
-            echo "SCRIPT_VERSION has been manually updated"
+          if ! git show HEAD | grep -q "main.py"; then
+            echo "No changes to main.py since last commit"
             exit 0
           else
-            echo 'SCRIPT_VERSION has NOT been manually updated'
+            echo "main.py file has been modified"
+            # Get the previous SCRIPT_VERSION from the last commit
+            PREVIOUS_SCRIPT_VERSION=$(git show HEAD:main.py | grep "SCRIPT_VERSION = " | cut -d "=" -f 2 | tr -d " '\"")
+
+            # Get the current SCRIPT_VERSION from main.py
+            SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
+
+            # Check if the SCRIPT_VERSION has been manually updated
+            if [[ "$SCRIPT_VERSION" != "$PREVIOUS_SCRIPT_VERSION" ]]; then
+              echo "SCRIPT_VERSION has been manually updated"
+              exit 0
+            else
+              echo 'SCRIPT_VERSION has NOT been manually updated'
+              # Increment the SCRIPT_VERSION by 0.1
+              NEW_SCRIPT_VERSION=$(awk -v x=$SCRIPT_VERSION 'BEGIN { printf "%.1f", x+0.1 }')
+
+              # Update the SCRIPT_VERSION in main.py
+              sed -i "s/$SCRIPT_VERSION/$NEW_SCRIPT_VERSION/g" main.py
+              echo "### THE SCRIPT UPDATED ###"
+            fi
           fi
-
-      # Update the SCRIPT_VERSION in main.py
-      - name: Update SCRIPT_VERSION
-        run: |
-          # Get the current SCRIPT_VERSION from main.py
-          SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
-
-          # Increment the SCRIPT_VERSION by 0.1
-          NEW_SCRIPT_VERSION=$(awk -v x=$SCRIPT_VERSION 'BEGIN { printf "%.1f", x+0.1 }')
-
-          # Update the SCRIPT_VERSION in main.py
-          sed -i "s/$SCRIPT_VERSION/$NEW_SCRIPT_VERSION/g" main.py
-          echo "### THE SCRIPT UPDATED ###"
