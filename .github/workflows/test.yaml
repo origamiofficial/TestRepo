@@ -24,7 +24,7 @@ jobs:
           SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
 
           # Compare the current SCRIPT_VERSION with its value in the last commit
-          if ! git diff HEAD^ -- main.py | grep -q "$SCRIPT_VERSION"; then
+          if ! git diff HEAD~1 -- main.py | grep -q "$SCRIPT_VERSION"; then
           echo "SCRIPT_VERSION has been manually updated"
           exit 0
           fi
