@@ -7,10 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # TEST ONLY. DELETE THIS
-      - name: WORKFLOW OUTPUT TEST
-        id: workflow_output_test
-        run: echo $(git show HEAD | grep "main.py")
       # Check if main.py has been modified since the last commit
       - name: Check for modifications to main.py
         id: check-modifications
@@ -18,6 +14,8 @@ jobs:
           if ! git show HEAD | grep -q "main.py"; then
             echo "No changes to main.py since last commit"
             exit 0
+          else
+            echo "main.py file has been modified"
           fi
 
       # Check if the SCRIPT_VERSION has been manually updated before being pushed
