@@ -33,12 +33,12 @@ jobs:
             echo "SCRIPT_VERSION has been manually updated"
             exit 0
           else
-            echo "SCRIPT_VERSION has NOT been manually updated"
+            echo 'SCRIPT_VERSION has NOT been manually updated'
           fi
 
       # Update the SCRIPT_VERSION in main.py
       - name: Update SCRIPT_VERSION
-        if: contains(steps.check-modifications.output, 'main.py file has been modified') && contains(steps.check-modifications.output, "SCRIPT_VERSION has NOT been manually updated")
+        if: contains(steps.check-modifications.output, 'main.py file has been modified') && contains(steps.check-modifications.output, 'SCRIPT_VERSION has NOT been manually updated')
         run: |
           # Get the current SCRIPT_VERSION from main.py
           SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
