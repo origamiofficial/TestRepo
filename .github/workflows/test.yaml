@@ -23,11 +23,12 @@ jobs:
           # Get the current SCRIPT_VERSION from main.py
           SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
 
-          # Check if the SCRIPT_VERSION has been manually updated
-          if [[ "$SCRIPT_VERSION" =~ ^[0-9]+.[0-9]+$ ]]; then
-            echo "SCRIPT_VERSION has been manually updated"
-            exit 0
+          # Compare the current SCRIPT_VERSION with its value in the last commit
+          if ! git diff HEAD^ -- main.py | grep -q "$SCRIPT_VERSION"; then
+          echo "SCRIPT_VERSION has been manually updated"
+          exit 0
           fi
+
 
       # Update the SCRIPT_VERSION in main.py
       - name: Update SCRIPT_VERSION
