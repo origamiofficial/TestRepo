@@ -7,20 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # Check if main.py has been modified since the last commit
-      - name: Check for modifications to main.py
-        id: check-modifications
-        run: |
-          if ! git show HEAD | grep -q "main.py"; then
-            echo "No changes to main.py since last commit"
-            exit 0
-          else
-            echo 'main.py file has been modified'
-          fi
-
       # Check if the SCRIPT_VERSION has been manually updated before being pushed
       - name: Check if SCRIPT_VERSION has been manually updated
-        if: contains(steps.check-modifications.output, 'main.py file has been modified')
         run: |
           # Get the previous SCRIPT_VERSION from the last commit
           PREVIOUS_SCRIPT_VERSION=$(git show HEAD:main.py | grep "SCRIPT_VERSION = " | cut -d "=" -f 2 | tr -d " '\"")
@@ -38,7 +26,6 @@ jobs:
 
       # Update the SCRIPT_VERSION in main.py
       - name: Update SCRIPT_VERSION
-        if: contains(steps.check-modifications.output, 'main.py file has been modified') && contains(steps.check-modifications.output, 'SCRIPT_VERSION has NOT been manually updated')
         run: |
           # Get the current SCRIPT_VERSION from main.py
           SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
