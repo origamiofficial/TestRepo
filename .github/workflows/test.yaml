@@ -11,7 +11,7 @@ jobs:
       - name: Bump Script Version
         id: update-script
         run: |
-          if ! git show HEAD main.py; then
+          if ! git diff HEAD~1 --name-only | grep -q "main.py"; then
             echo "No changes to main.py since last commit"
             exit 0
           else
