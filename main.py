@@ -132,22 +132,3 @@ def send_telegram_message(title, description, link, day, month, year):
             f"Error sending message to Telegram: {response.text}. Exiting script."
         )
         exit()
-
-# Iterate through each post on the AIUB Notice page and check if it exists in the database
-for post in posts:
-    # Use the XPath expressions provided in the script to extract the title, description, link, day, month, and year
-    # for each post
-    title = post.xpath(TITLE_XPATH)[0]
-    description = post.xpath(DESCRIPTION_XPATH)[0]
-    link = post.xpath(LINK_XPATH)[0]
-    day = post.xpath(DAY_XPATH)[0]
-    month = post.xpath(MONTH_XPATH)[0]
-    year = post.xpath(YEAR_XPATH)[0]
-
-    # Check if post is already in database
-    c.execute(
-        "SELECT * FROM {} WHERE title=? AND description=? AND link=?".format(
-            DB_TABLE_NAME
-        ),
-        (title, description, link),
-    )
