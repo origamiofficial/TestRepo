@@ -107,28 +107,3 @@ try:
 except Exception as e:
     print(f"Error checking if notices table exists: {e}. Exiting script.")
     exit()
-
-# Define the send_telegram_message function
-def send_telegram_message(title, description, link, day, month, year):
-    # Use the telegram information provided in the script to construct the URL for the API
-    telegram_api_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_API_KEY}/sendMessage"
-
-    # Use the URL and XPath information provided in the script to extract the title, description, and link
-    # for each post on the AIUB Notice page
-    message = f"{title}\nDate: {day} {month} {year}\n\n{description}\n\nhttps://www.aiub.edu{link}"
-
-    # Use the requests module to send a POST request to the telegram API URL with the necessary
-    # parameters to send a message to the specified chat
-    response = requests.post(
-        telegram_api_url,
-        data={"chat_id": TELEGRAM_CHAT_ID, "text": message, "disable_web_page_preview": True},
-    )
-
-    # Check if the request was successful, and print the response from the server
-    if response.status_code == 200:
-        print(f"Successfully sent message to Telegram.")
-    else:
-        print(
-            f"Error sending message to Telegram: {response.text}. Exiting script."
-        )
-        exit()
