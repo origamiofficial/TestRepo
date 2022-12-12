@@ -151,15 +151,3 @@ for post in posts:
         ),
         (title, description, link),
     )
-    # Check if the query returned any rows
-    if c.fetchone() is None:
-        # Send post to Telegram
-        send_telegram_message(title, description, link, day, month, year)
-        print(f"Sent post to Telegram: {title}")
-        # Insert post into database
-        c.execute(
-            "INSERT INTO {} (title, description, link) VALUES (?, ?, ?)".format(
-                DB_TABLE_NAME
-            ),
-            (title, description, link),
-        )
