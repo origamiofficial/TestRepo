@@ -96,14 +96,3 @@ try:
 except Exception as e:
     print(f"vJBSHdgliwygflivye;svjlehvlsbj")
     exit()
-
-# Check if table was created or already exists
-try:
-    c.execute("SELECT * FROM sqlite_master WHERE type='table' AND name=?", (DB_TABLE_NAME,))
-    if c.fetchone():
-        print("Notices table already exists in database.")
-    else:
-        print("Notices table created in database.")
-except Exception as e:
-    print(f"Error checking if notices table exists: {e}. Exiting script.")
-    exit()
