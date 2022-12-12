@@ -42,7 +42,7 @@ jobs:
               fi
               git config user.name "GitHub Actions"
               git config user.email "actions@github.com"
-              git remote set-url origin https://${{ secrets.GIT_AUTH }}@github.com/origamiofficial/aiub-notice-checker.git
+              git remote set-url origin https://${{ secrets.GIT_AUTH }}@github.com/origamiofficial/TestRepo.git
               git add main.py
               git commit -m "Bump Script Version"
               git push
