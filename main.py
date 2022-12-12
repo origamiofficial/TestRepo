@@ -163,7 +163,3 @@ for post in posts:
             ),
             (title, description, link),
         )
-
-# Save changes to database and close connection
-conn.commit()
-conn.close
