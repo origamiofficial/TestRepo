@@ -19,7 +19,7 @@ jobs:
           else
             echo "main.py file has been modified"
             # Get the previous SCRIPT_VERSION from the last commit
-            PREVIOUS_SCRIPT_VERSION=$(git show HEAD:main.py | grep "SCRIPT_VERSION = " | cut -d "=" -f 2 | tr -d " '\"")
+            PREVIOUS_SCRIPT_VERSION=$(git show HEAD~:main.py | grep "SCRIPT_VERSION = " | cut -d "=" -f 2 | tr -d " '\"")
 
             # Get the current SCRIPT_VERSION from main.py
             SCRIPT_VERSION=$(grep "SCRIPT_VERSION = " main.py | cut -d "=" -f 2 | tr -d " '\"")
