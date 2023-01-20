@@ -3,7 +3,29 @@ on:
   push:
 
 jobs:
-  build-and-publish:
+  job01:
+    name: Base update check
+    runs-on: ubuntu-latest
+    outputs:
+      build_new_image: ${{ steps.base_update_check.outputs.build_image }}
+    steps:
+      -
+        name: Base image update check
+        id: base_update_check
+        run: |
+          BASE_IMAGE_DIGEST=$(curl -s https://registry.hub.docker.com/v2/repositories/pihole/pihole/tags/dev | grep -oP '"digest":"\K[^"]+' | tail -1)
+          PREVIOUS_DIGEST=$(cat ./dev/Base_Digest)
+          if [ "$BASE_IMAGE_DIGEST" == "$PREVIOUS_DIGEST" ]; then
+            echo "Base image has not been updated. Exiting..."
+            echo "::set-output name=build_image::false"
+          else
+            echo "Base image has been updated. Continuing with the build..."
+            echo "::set-output name=build_image::true"
+          fi
+  job01:
+    name: Base update check
+    needs: [job01]
+    if: needs.job01.outputs.build_new_image == 'true'
     runs-on: ubuntu-latest
     steps:
       -
@@ -11,17 +33,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-      -
-        name: Base image update check
-        run: |
-          BASE_IMAGE_DIGEST=$(curl -s https://registry.hub.docker.com/v2/repositories/pihole/pihole/tags/dev | grep -oP '"digest":"\K[^"]+' | tail -1)
-          PREVIOUS_DIGEST=$(cat ./dev/Base_Digest)
-          if [ "$BASE_IMAGE_DIGEST" == "$PREVIOUS_DIGEST" ]; then
-            echo "Base image has not been updated. Exiting..."
-            continue-on-error: false
-          else
-            echo "Base image has been updated. Continuing with the build..."
-          fi
       -
         name: Update digest to file
         run: |
