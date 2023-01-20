@@ -13,7 +13,6 @@ jobs:
           ref: main
       -
         name: Base image update check
-        id: base_update_check
         run: |
           BASE_IMAGE_DIGEST=$(curl -s https://registry.hub.docker.com/v2/repositories/pihole/pihole/tags/dev | grep -oP '"digest":"\K[^"]+' | tail -1)
           PREVIOUS_DIGEST=$(cat ./dev/Base_Digest)
@@ -25,9 +24,8 @@ jobs:
           fi
       -
         name: Update digest to file
-        env:
-          BASE_IMAGE_DIGEST: ${{ steps.base_update_check.outputs.BASE_IMAGE_DIGEST }}
         run: |
+          BASE_IMAGE_DIGEST=$(curl -s https://registry.hub.docker.com/v2/repositories/pihole/pihole/tags/dev | grep -oP '"digest":"\K[^"]+' | tail -1)
           echo "New Digest: ${{ env.BASE_IMAGE_DIGEST }}"
           echo ${{ env.BASE_IMAGE_DIGEST }} > ./dev/Base_Digest
       -
