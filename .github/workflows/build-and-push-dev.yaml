@@ -24,7 +24,7 @@ jobs:
           fi
       -
         name: Update digest to file
-        run: echo $BASE_IMAGE_DIGEST > Base_Digest
+        run: echo $BASE_IMAGE_DIGEST > dev/Base_Digest
       -
         name: Push changes to repository
         env:
