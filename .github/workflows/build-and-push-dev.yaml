@@ -28,7 +28,7 @@ jobs:
           BASE_IMAGE_DIGEST: ${{ steps.base_image_update_check.outputs.BASE_IMAGE_DIGEST }}
         run: |
           echo "New Digest: $BASE_IMAGE_DIGEST"
-          echo $BASE_IMAGE_DIGEST > ./dev/Base_Digest
+          echo ${{ env.BASE_IMAGE_DIGEST }} > ./dev/Base_Digest
       -
         name: Push changes to repository
         env:
