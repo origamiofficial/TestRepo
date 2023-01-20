@@ -22,7 +22,7 @@ jobs:
             echo "Base image has been updated. Continuing with the build..."
             echo "::set-output name=build_image::true"
           fi
-  job01:
+  job02:
     name: Base update check
     needs: [job01]
     if: needs.job01.outputs.build_new_image == 'true'
