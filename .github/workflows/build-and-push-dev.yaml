@@ -14,7 +14,6 @@ jobs:
           ref: main
       -
         name: Base image update check
-        id: base_update_check
         run: |
           BASE_IMAGE_DIGEST=$(curl -s https://registry.hub.docker.com/v2/repositories/pihole/pihole/tags/dev | grep -oP '"digest":"\K[^"]+' | tail -1)
           PREVIOUS_DIGEST=$(cat ./dev/Base_Digest)
@@ -28,7 +27,7 @@ jobs:
   job02:
     name: Build and publish
     needs: [job01]
-    if: needs.job01.steps.base_update_check.outputs.build_image == 'true'
+    if: steps.job01.outputs.build_image == 'true'
     runs-on: ubuntu-latest
     steps:
       -
