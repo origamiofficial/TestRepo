@@ -26,8 +26,8 @@ jobs:
         name: Update digest to file
         run: |
           BASE_IMAGE_DIGEST=$(curl -s https://registry.hub.docker.com/v2/repositories/pihole/pihole/tags/dev | grep -oP '"digest":"\K[^"]+' | tail -1)
-          echo "New Digest: ${{ env.BASE_IMAGE_DIGEST }}"
-          echo ${{ env.BASE_IMAGE_DIGEST }} > ./dev/Base_Digest
+          echo "New Digest: $BASE_IMAGE_DIGEST"
+          echo $BASE_IMAGE_DIGEST > ./dev/Base_Digest
       -
         name: Push changes to repository
         env:
