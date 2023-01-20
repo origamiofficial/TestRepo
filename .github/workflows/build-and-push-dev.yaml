@@ -6,6 +6,8 @@ jobs:
   job01:
     name: Base update check
     runs-on: ubuntu-latest
+    outputs:
+      build_new_image: ${{ steps.base_update_check.outputs.build_image }}
     steps:
       -
         name: Checkout
@@ -28,7 +30,7 @@ jobs:
   job02:
     name: Build and publish
     needs: [job01]
-    if: needs.job01.outputs.build_image == 'true'
+    if: needs.job01.outputs.build_new_image == 'true'
     runs-on: ubuntu-latest
     steps:
       -
