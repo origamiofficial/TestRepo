@@ -6,8 +6,6 @@ jobs:
   job01:
     name: Base update check
     runs-on: ubuntu-latest
-    outputs:
-      build_new_image: ${{ steps.base_update_check.outputs.build_image }}
     steps:
       -
         name: Checkout
@@ -22,15 +20,15 @@ jobs:
           PREVIOUS_DIGEST=$(cat ./dev/Base_Digest)
           if [ "$BASE_IMAGE_DIGEST" == "$PREVIOUS_DIGEST" ]; then
             echo "Base image has not been updated. Exiting..."
-            echo "::set-output name=build_image::false"
+            echo "build_image=false" >> $GITHUB_OUTPUT
           else
             echo "Base image has been updated. Continuing with the build..."
-            echo "::set-output name=build_image::true"
+            echo "build_image=true" >> $GITHUB_OUTPUT
           fi
   job02:
     name: Build and publish
     needs: [job01]
-    if: needs.job01.outputs.build_new_image == 'true'
+    if: needs.job01.steps.base_update_check.outputs.build_image == 'true'
     runs-on: ubuntu-latest
     steps:
       -
