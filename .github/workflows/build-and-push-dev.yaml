@@ -36,6 +36,6 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git remote set-url origin https://${{ secrets.GIT_AUTH }}@github.com/origamiofficial/TestRepo.git
-          git add Base_Digest
+          git add dev/Base_Digest
           git commit -m "Base Digest Updated"
           git push
