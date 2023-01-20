@@ -18,7 +18,7 @@ jobs:
           PREVIOUS_DIGEST=$(cat ./dev/Base_Digest)
           if [ "$BASE_IMAGE_DIGEST" == "$PREVIOUS_DIGEST" ]; then
             echo "Base image has not been updated. Exiting..."
-            exit 0
+            continue-on-error: false
           else
             echo "Base image has been updated. Continuing with the build..."
           fi
