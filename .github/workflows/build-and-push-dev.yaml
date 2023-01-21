@@ -56,4 +56,3 @@ jobs:
           git add ./dev/Base_Digest
           git commit -m "New Base Digest Updated"
           git push
-          exit 0
