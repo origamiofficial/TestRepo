@@ -54,7 +54,7 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=schedule,pattern=dev
+            pattern=dev
       -
         name: Login to DockerHub
         uses: docker/login-action@v2
